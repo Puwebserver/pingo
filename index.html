@@ -31,7 +31,8 @@
             const pingResult = document.getElementById('pingResult');
             const startTime = performance.now();
 
-            fetch('https://www.google.com', { method: 'HEAD', mode: 'no-cors' })
+            // Using a more suitable endpoint
+            fetch('https://www.cloudflare.com/cdn-cgi/trace', { method: 'GET', mode: 'no-cors' })
                 .then(() => {
                     const endTime = performance.now();
                     const ping = Math.round(endTime - startTime);
