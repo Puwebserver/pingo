@@ -12,7 +12,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background: linear-gradient(135deg, #74ebd5, #acb6e5);
+            background: #ffffff;
             color: #333;
         }
 
@@ -36,6 +36,15 @@
                     const endTime = performance.now();
                     const ping = Math.round(endTime - startTime);
                     pingResult.textContent = `${ping} ms`;
+
+                    // Change color based on ping value
+                    if (ping <= 50) {
+                        pingResult.style.color = '#4caf50'; // Green for low ping
+                    } else if (ping <= 150) {
+                        pingResult.style.color = '#ffa500'; // Orange for medium ping
+                    } else {
+                        pingResult.style.color = '#e74c3c'; // Red for high ping
+                    }
                 })
                 .catch(() => {
                     pingResult.textContent = 'Error';
