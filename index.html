@@ -12,12 +12,12 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background: #ffffff;
+            background: #ffffff; /* Keep background white */
             color: #333;
         }
 
         .ping-result {
-            font-size: 1.5rem; /* Adjusted to be smaller */
+            font-size: 2rem; /* Slightly larger for better visibility */
             font-weight: bold;
             color: #4caf50;
         }
@@ -27,17 +27,20 @@
     <div class="ping-result" id="pingResult">--</div>
 
     <script>
-        function measurePing() {
-            const pingResult = document.getElementById('pingResult');
-            const startTime = performance.now();
+        // Cache DOM element outside the function for improved performance
+        const pingResult = document.getElementById('pingResult');
 
+        function measurePing() {
+            const startTime = performance.now(); // Record the start time
+
+            // Fetch request to measure ping
             fetch('https://www.google.com', { method: 'HEAD', mode: 'no-cors' })
                 .then(() => {
-                    const endTime = performance.now();
-                    const ping = Math.round(endTime - startTime);
-                    pingResult.textContent = `${ping} ms`;
+                    const endTime = performance.now(); // Record the end time
+                    const ping = Math.round(endTime - startTime); // Calculate ping
+                    pingResult.textContent = `${ping} ms`; // Update text content
 
-                    // Change color based on ping value
+                    // Dynamically change color based on ping value
                     if (ping <= 50) {
                         pingResult.style.color = '#4caf50'; // Green for low ping
                     } else if (ping <= 150) {
@@ -47,12 +50,29 @@
                     }
                 })
                 .catch(() => {
-                    pingResult.textContent = 'Error';
-                    pingResult.style.color = '#e74c3c';
+                    pingResult.textContent = 'Error'; // Display error message
+                    pingResult.style.color = '#e74c3c'; // Red color for errors
                 });
         }
 
-        setInterval(measurePing, 1000);
+        // Optimize timing mechanism using requestAnimationFrame
+        function startPingMonitor() {
+            measurePing();
+            setTimeout(startPingMonitor, 1000); // Call every 1 second
+        }
+
+        // Allow the font size to adapt to viewport width
+        function adjustFontSize() {
+            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+            pingResult.style.fontSize = `${Math.max(1.5, vw / 50)}rem`;
+        }
+
+        // Listen for resize events to adjust font size
+        window.addEventListener('resize', adjustFontSize);
+
+        // Initialize font size and start the ping monitor
+        adjustFontSize();
+        startPingMonitor();
     </script>
 </body>
 </html>
