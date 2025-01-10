@@ -17,35 +17,30 @@
         }
 
         .ping-result {
-            font-size: 1.5rem; /* Slightly smaller font size */
+            font-size: 1.5rem;
             font-weight: bold;
             color: #4caf50;
-            transform: scale(1); /* Initial scale */
-            opacity: 1; /* Initial opacity */
-            transition: all 0.3s ease-out; /* Smooth transition for all properties */
+            transition: color 0.5s ease-in-out; /* Smooth color change */
         }
 
-        @keyframes smoothPulse {
+        /* Keyframe for smoothly animating the number change */
+        @keyframes numberChange {
             0% {
-                transform: scale(1);
-                opacity: 0.8;
+                transform: scale(1); /* Start at normal scale */
+                opacity: 0.5; /* Start with lower opacity */
             }
             50% {
-                transform: scale(1.2);
-                opacity: 1;
+                transform: scale(1.1); /* Slightly scale up */
+                opacity: 1; /* Full opacity */
             }
             100% {
-                transform: scale(1);
-                opacity: 0.8;
+                transform: scale(1); /* Return to normal size */
+                opacity: 1; /* Full opacity */
             }
         }
 
         .animate {
-            animation: smoothPulse 0.6s ease-in-out; /* Apply pulse effect */
-        }
-
-        .ping-result {
-            transition: color 0.5s ease-in-out, transform 0.5s ease-out; /* Smooth color transition */
+            animation: numberChange 0.5s ease-out; /* Smooth animation */
         }
     </style>
 </head>
@@ -56,6 +51,8 @@
         // Cache DOM element outside the function for improved performance
         const pingResult = document.getElementById('pingResult');
 
+        let previousPing = 0;
+
         function measurePing() {
             const startTime = performance.now(); // Record the start time
 
@@ -64,7 +61,11 @@
                 .then(() => {
                     const endTime = performance.now(); // Record the end time
                     const ping = Math.round(endTime - startTime); // Calculate ping
+
+                    // Update the text content with animation
+                    pingResult.classList.remove('animate'); // Reset animation class
                     pingResult.textContent = `${ping} ms`; // Update text content
+                    pingResult.classList.add('animate'); // Add the animation class to trigger animation
 
                     // Dynamically change color based on ping value
                     if (ping <= 50) {
@@ -74,10 +75,6 @@
                     } else {
                         pingResult.style.color = '#e74c3c'; // Red for high ping
                     }
-
-                    // Add smart animation
-                    pingResult.classList.add('animate');
-                    setTimeout(() => pingResult.classList.remove('animate'), 600); // Remove animation after it completes
                 })
                 .catch(() => {
                     pingResult.textContent = 'Error'; // Display error message
