@@ -12,14 +12,34 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background: #ffffff; /* Keep background white */
+            background: #ffffff;
             color: #333;
         }
 
         .ping-result {
-            font-size: 2rem; /* Slightly larger for better visibility */
+            font-size: 2rem;
             font-weight: bold;
             color: #4caf50;
+            transition: color 0.5s ease-in-out, transform 0.3s ease; /* Smooth color change and transform */
+        }
+
+        @keyframes numberAnimation {
+            0% {
+                transform: scale(1) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2) rotate(10deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .animate {
+            animation: numberAnimation 0.5s ease-in-out;
         }
     </style>
 </head>
@@ -48,6 +68,10 @@
                     } else {
                         pingResult.style.color = '#e74c3c'; // Red for high ping
                     }
+
+                    // Add animation to the ping result number
+                    pingResult.classList.add('animate');
+                    setTimeout(() => pingResult.classList.remove('animate'), 500); // Remove animation after it completes
                 })
                 .catch(() => {
                     pingResult.textContent = 'Error'; // Display error message
