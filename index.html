@@ -17,35 +17,35 @@
         }
 
         .ping-result {
-            font-size: 1.5rem; /* Set back to smaller size */
+            font-size: 1.5rem; /* Slightly smaller font size */
             font-weight: bold;
             color: #4caf50;
-            transition: color 0.5s ease-in-out, transform 0.5s ease; /* Smooth color and transform transitions */
+            transform: scale(1); /* Initial scale */
+            opacity: 1; /* Initial opacity */
+            transition: all 0.3s ease-out; /* Smooth transition for all properties */
         }
 
-        @keyframes robotAnimation {
+        @keyframes smoothPulse {
             0% {
-                transform: translateY(0) rotate(0deg); /* Initial position */
+                transform: scale(1);
+                opacity: 0.8;
             }
-            20% {
-                transform: translateY(-5px) rotate(5deg); /* Move up and rotate */
-            }
-            40% {
-                transform: translateY(5px) rotate(-5deg); /* Move down and rotate */
-            }
-            60% {
-                transform: translateY(-3px) rotate(3deg); /* Smaller movement */
-            }
-            80% {
-                transform: translateY(3px) rotate(-3deg); /* Small downwards movement */
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
             }
             100% {
-                transform: translateY(0) rotate(0deg); /* Return to original position */
+                transform: scale(1);
+                opacity: 0.8;
             }
         }
 
         .animate {
-            animation: robotAnimation 1s ease-in-out; /* Apply robot-like movement */
+            animation: smoothPulse 0.6s ease-in-out; /* Apply pulse effect */
+        }
+
+        .ping-result {
+            transition: color 0.5s ease-in-out, transform 0.5s ease-out; /* Smooth color transition */
         }
     </style>
 </head>
@@ -75,9 +75,9 @@
                         pingResult.style.color = '#e74c3c'; // Red for high ping
                     }
 
-                    // Add robot animation to the ping result number
+                    // Add smart animation
                     pingResult.classList.add('animate');
-                    setTimeout(() => pingResult.classList.remove('animate'), 1000); // Remove animation after it completes
+                    setTimeout(() => pingResult.classList.remove('animate'), 600); // Remove animation after it completes
                 })
                 .catch(() => {
                     pingResult.textContent = 'Error'; // Display error message
@@ -94,7 +94,7 @@
         // Allow the font size to adapt to viewport width
         function adjustFontSize() {
             const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-            pingResult.style.fontSize = `${Math.max(1.5, vw / 70)}rem`; /* Slightly smaller font */
+            pingResult.style.fontSize = `${Math.max(1.5, vw / 70)}rem`; /* Adjust based on viewport size */
         }
 
         // Listen for resize events to adjust font size
