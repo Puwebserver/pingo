@@ -12,35 +12,14 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background: #ffffff;
+            background: #ffffff; /* Keep background white */
             color: #333;
         }
 
         .ping-result {
-            font-size: 1.5rem;
+            font-size: 2rem; /* Slightly larger for better visibility */
             font-weight: bold;
             color: #4caf50;
-            transition: color 0.5s ease-in-out; /* Smooth color change */
-        }
-
-        /* Keyframe for smoothly animating the number change */
-        @keyframes numberChange {
-            0% {
-                transform: scale(1); /* Start at normal scale */
-                opacity: 0.5; /* Start with lower opacity */
-            }
-            50% {
-                transform: scale(1.1); /* Slightly scale up */
-                opacity: 1; /* Full opacity */
-            }
-            100% {
-                transform: scale(1); /* Return to normal size */
-                opacity: 1; /* Full opacity */
-            }
-        }
-
-        .animate {
-            animation: numberChange 0.5s ease-out; /* Smooth animation */
         }
     </style>
 </head>
@@ -51,8 +30,6 @@
         // Cache DOM element outside the function for improved performance
         const pingResult = document.getElementById('pingResult');
 
-        let previousPing = 0;
-
         function measurePing() {
             const startTime = performance.now(); // Record the start time
 
@@ -61,11 +38,7 @@
                 .then(() => {
                     const endTime = performance.now(); // Record the end time
                     const ping = Math.round(endTime - startTime); // Calculate ping
-
-                    // Update the text content with animation
-                    pingResult.classList.remove('animate'); // Reset animation class
-                    pingResult.textContent = `${ping} ms`; // Update text content
-                    pingResult.classList.add('animate'); // Add the animation class to trigger animation
+                    pingResult.textContent = ${ping} ms; // Update text content
 
                     // Dynamically change color based on ping value
                     if (ping <= 50) {
@@ -91,7 +64,7 @@
         // Allow the font size to adapt to viewport width
         function adjustFontSize() {
             const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-            pingResult.style.fontSize = `${Math.max(1.5, vw / 70)}rem`; /* Adjust based on viewport size */
+            pingResult.style.fontSize = ${Math.max(1.5, vw / 50)}rem;
         }
 
         // Listen for resize events to adjust font size
